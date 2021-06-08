@@ -12,6 +12,8 @@ services:
         build: .
         volumes: 
             - .:/app
+        environment: 
+            STOCKS_PRJ_DJANGO_SECRET: ${STOCKS_PRJ_DJANGO_SECRET}  
         networks: 
             - nginx_network
 networks:
