@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    nginx:
+        build: ./nginx
+        ports:
+            - 80:80
+        depends_on:
+            - web
+        networks: 
+            - nginx_network
+    web:
+        build: .
+        volumes: 
+            - .:/app
+        networks: 
+            - nginx_network
+networks:
+    nginx_network:
+        driver: bridge
