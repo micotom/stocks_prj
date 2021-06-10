@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('STOCKS_PRJ_DJANGO_SECRET', '')
 
 DEBUG = os.getenv('IS_DEBUG', '')
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost')]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['localhost'])
 
 # Application definition
 
