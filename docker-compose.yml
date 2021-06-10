@@ -11,9 +11,11 @@ services:
     web:
         build: .
         volumes: 
-            - .:/app
-        environment: 
-            STOCKS_PRJ_DJANGO_SECRET: ${STOCKS_PRJ_DJANGO_SECRET}  
+            - .:/app 
+        environment:
+            IS_DEBUG: ${IS_DEBUG}
+            STOCKS_PRJ_DJANGO_SECRET: ${STOCKS_PRJ_DJANGO_SECRET}
+            ALLOWED_HOSTS: ${ALLOWED_HOSTS}
         networks: 
             - nginx_network
 networks:
