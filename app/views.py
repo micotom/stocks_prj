@@ -1,11 +1,13 @@
 from sseclient import SSEClient
 from django.http.response import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.core.exceptions import ValidationError
 from .isininfo import IsinInfo
 import requests
 import sseclient
 import datetime
 import logging
 import json
+import re
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 
@@ -43,11 +45,29 @@ def __capture_data(client: SSEClient):
     client.close()
     return data       
 
+__isin_regex = re.compile(r'([A-Z]{2})([A-Z0-9]{9})([0-9]{1})')
+def validateIsin(isin) -> bool:
+    match = __isin_regex.match(str(isin))
+    return bool(match)
+
+__days_refex = re.compile(r'^[0-9]*$')
+def validateDays(days) -> bool:
+    match = __days_refex.match(str(days))
+    return bool(match)
+
 def get_data(request):
 
     isin: str = request.GET['isin']
     mic: str = request.GET['mic']
     days: int = int(request.GET['days'])
+
+    if not validateIsin(isin):
+        raise ValidationError("Invalid Isin", code=400, params={'value': isin})
+    if not mic == "XETR":
+        raise ValidationError("Invalid Mic", code=400, params={'value': mic})
+    if not validateDays(days):
+        raise ValidationError("Invalid Days", code=400, params={'value': days})
+        
     to_time_raw = datetime.datetime.now()
     from_time_raw = to_time_raw - datetime.timedelta(days = days)
     to_time: int = int((to_time_raw - epoch).total_seconds())
