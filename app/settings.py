@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('STOCKS_PRJ_DJANGO_SECRET', '')
 
-DEBUG = os.getenv('IS_DEBUG', '')
+DEBUG = int(os.getenv('IS_DEBUG', 0))
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', 'localhost')]
 
